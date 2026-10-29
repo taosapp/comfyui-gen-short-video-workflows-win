@@ -1,0 +1,29 @@
+# ===== 模型与二进制产物（体积原因不入库） =====
+models/
+*.gguf
+*.safetensors
+*.ckpt
+*.pth
+*.mp4
+*.png.output
+
+# ===== ComfyUI 安装目录：整体排除，仅保留自研自定义节点 =====
+comfyui/*
+!comfyui/custom_nodes/
+comfyui/custom_nodes/*
+!comfyui/custom_nodes/ltx2_gguf_loader.py
+
+# ===== 运行输出与日志 =====
+comfyui/output/
+comfyui/temp/
+comfyui/input/
+comfyui/user/
+comfyui/logs/
+comfyui_server.log
+*.log
+
+# ===== 工作区元数据与缓存 =====
+.zwork/
+.skill-vet-tmp/
+__pycache__/
+*.pyc

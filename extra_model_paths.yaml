@@ -1,0 +1,22 @@
+# ComfyUI Desktop 额外模型路径配置（指向 gen-short-video 项目已有模型）
+# 已同步部署到 Desktop standalone 根目录，随 ComfyUI 自动加载
+gen-short-video:
+  base_path: D:\ai\gen-short-video\comfyui\models\
+  checkpoints: checkpoints
+  text_encoders: text_encoders
+  clip: text_encoders
+  vae: vae
+  diffusion_models: diffusion_models
+  unet: diffusion_models
+  loras: loras
+
+# fp8 完整 checkpoint（ltx-2.3-22b-dev/distilled-fp8.safetensors）
+gen-short-video-fp8:
+  base_path: D:\ai\gen-short-video\models\ltx-2.3-fp8\
+  checkpoints: .
+
+# 官方 lora 与空间放大器
+gen-short-video-ltx23:
+  base_path: D:\ai\gen-short-video\models\ltx-2.3\
+  loras: .
+  latent_upscale_models: .

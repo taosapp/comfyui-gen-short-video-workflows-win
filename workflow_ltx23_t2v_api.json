@@ -1,0 +1,219 @@
+{
+ "1": {
+  "class_type": "UnetLoaderGGUFAdvanced",
+  "inputs": {
+   "unet_name": "LTX-2.3-22B-distilled-1.1-Q4_K_M.gguf",
+   "dequant_dtype": "default",
+   "patch_dtype": "default",
+   "patch_on_device": false
+  }
+ },
+ "2": {
+  "class_type": "LTXAVTextEncoderLoaderGGUF",
+  "inputs": {
+   "text_encoder": "gemma-3-12b-it-Q4_K_M.gguf",
+   "projection_ckpt": "ltx-2.3-te-projection.safetensors",
+   "device": "default"
+  }
+ },
+ "3": {
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "ltx-2.3-video-vae.safetensors"
+  }
+ },
+ "4": {
+  "class_type": "LTXVAudioVAELoader",
+  "inputs": {
+   "ckpt_name": "ltx-2.3-audio-vae.safetensors"
+  }
+ },
+ "5": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": "A giant panda running towards the camera on the green grass, sunny day, clear blue sky, cinematic, natural lighting, high quality, 4K",
+   "clip": [
+    "2",
+    0
+   ]
+  }
+ },
+ "6": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": "ugly, blurry, low quality, distorted, deformed, watermark, text, bad anatomy",
+   "clip": [
+    "2",
+    0
+   ]
+  }
+ },
+ "7": {
+  "class_type": "EmptyLTXVLatentVideo",
+  "inputs": {
+   "width": 704,
+   "height": 1280,
+   "length": 121,
+   "batch_size": 1
+  }
+ },
+ "8": {
+  "class_type": "LTXVEmptyLatentAudio",
+  "inputs": {
+   "frames_number": 121,
+   "frame_rate": 25.0,
+   "batch_size": 1,
+   "audio_vae": [
+    "4",
+    0
+   ]
+  }
+ },
+ "9": {
+  "class_type": "LTXVConcatAVLatent",
+  "inputs": {
+   "video_latent": [
+    "7",
+    0
+   ],
+   "audio_latent": [
+    "8",
+    0
+   ]
+  }
+ },
+ "10": {
+  "class_type": "LTXVConditioning",
+  "inputs": {
+   "positive": [
+    "5",
+    0
+   ],
+   "negative": [
+    "6",
+    0
+   ],
+   "frame_rate": 25.0
+  }
+ },
+ "11": {
+  "class_type": "CFGGuider",
+  "inputs": {
+   "cfg": 1.0,
+   "model": [
+    "1",
+    0
+   ],
+   "positive": [
+    "10",
+    0
+   ],
+   "negative": [
+    "10",
+    1
+   ]
+  }
+ },
+ "12": {
+  "class_type": "KSamplerSelect",
+  "inputs": {
+   "sampler_name": "euler"
+  }
+ },
+ "13": {
+  "class_type": "RandomNoise",
+  "inputs": {
+   "noise_seed": 7
+  }
+ },
+ "14": {
+  "class_type": "ManualSigmas",
+  "inputs": {
+   "sigmas": "1.0, 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+  }
+ },
+ "15": {
+  "class_type": "SamplerCustomAdvanced",
+  "inputs": {
+   "noise": [
+    "13",
+    0
+   ],
+   "guider": [
+    "11",
+    0
+   ],
+   "sampler": [
+    "12",
+    0
+   ],
+   "sigmas": [
+    "14",
+    0
+   ],
+   "latent_image": [
+    "9",
+    0
+   ]
+  }
+ },
+ "16": {
+  "class_type": "LTXVSeparateAVLatent",
+  "inputs": {
+   "av_latent": [
+    "15",
+    0
+   ]
+  }
+ },
+ "17": {
+  "class_type": "VAEDecodeTiled",
+  "inputs": {
+   "samples": [
+    "16",
+    0
+   ],
+   "vae": [
+    "3",
+    0
+   ],
+   "tile_size": 768,
+   "overlap": 64,
+   "temporal_size": 64,
+   "temporal_overlap": 8
+  }
+ },
+ "18": {
+  "class_type": "LTXVAudioVAEDecode",
+  "inputs": {
+   "samples": [
+    "16",
+    1
+   ],
+   "audio_vae": [
+    "4",
+    0
+   ]
+  }
+ },
+ "19": {
+  "class_type": "VHS_VideoCombine",
+  "inputs": {
+   "frame_rate": 25.0,
+   "loop_count": 0,
+   "filename_prefix": "LTX-Video",
+   "format": "video/h264-mp4",
+   "pix_fmt": "yuv420p",
+   "pingpong": false,
+   "save_output": true,
+   "images": [
+    "17",
+    0
+   ],
+   "audio": [
+    "18",
+    0
+   ]
+  }
+ }
+}
