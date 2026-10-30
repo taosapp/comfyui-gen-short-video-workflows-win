@@ -26,7 +26,7 @@ import sys
 import os
 import subprocess
 
-COMFYUI_DIR = r"D:\ai\gen-short-video\comfyui"
+COMFYUI_DIR = r"D:\ai\comfyui-gen-short-video-workflows-win\comfyui"
 # 用 8189 避开 ComfyUI Desktop（它占用 8188 且未装 GGUF 自定义节点）
 COMFYUI_URL = "http://127.0.0.1:8189"
 CONDA_BAT = r"C:\Users\PPXW\miniconda3\condabin\activate.bat"

@@ -1,27 +1,25 @@
 @echo off
-chcp 65001 >nul
-title ComfyUI - LTX-Video 2.3
+title ComfyUI - LTX-Video 2.3 (this project)
 echo ========================================
 echo   ComfyUI - LTX-Video 2.3
-echo   浏览器: http://127.0.0.1:8188
+echo   Browser: http://127.0.0.1:8189
 echo ========================================
 echo.
 
 call C:\Users\PPXW\miniconda3\condabin\activate.bat ltx-video
-cd /d D:\ai\gen-short-video\comfyui
+cd /d D:\ai\comfyui-gen-short-video-workflows-win\comfyui
 
-echo [模型文件]
-echo   扩散模型 (GGUF):
-echo     - LTX-2.3-22B-distilled-1.1-Q4_K_M.gguf  (快速, 8步)
-echo     - LTX-2.3-dev-Q4_K_M.gguf                 (高质量, 20步)
-echo   文本编码器 (GGUF):
+echo [models]
+echo   diffusion (GGUF):
+echo     - LTX-2.3-22B-distilled-1.1-Q4_K_M.gguf  (fast, 8 steps)
+echo     - LTX-2.3-dev-Q4_K_M.gguf                (quality, 20 steps)
+echo   text encoder (GGUF):
 echo     - gemma-3-12b-it-Q4_K_M.gguf
 echo   VAE:
-echo     - ltx-video-vae.safetensors
+echo     - ltx-2.3-video-vae.safetensors
 echo.
-echo 启动中...
-echo.
+echo Starting...
 
-python main.py --lowvram --force-fp16 --preview-method auto
+python -u main.py --port 8189 --lowvram --force-fp16 --disable-auto-launch
 
 pause
